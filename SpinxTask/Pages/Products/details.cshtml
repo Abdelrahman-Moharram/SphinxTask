@@ -1,0 +1,35 @@
+﻿@page
+@model SpinxTask.Pages.Products.detailsModel
+@{
+}
+<div class="container">
+
+    
+
+    <div class="d-flex justify-content-between">
+        <h1 class="h1 mb-5">@Model.product.Name</h1>
+
+        <div>
+            @if (Model.product.IsActive)
+            {
+                <span class="text-success fw-bold">
+                    <i class="las la-check-circle"></i>
+                    Active
+                </span>
+            }
+            else
+            {
+                <span class="text-danger fw-bold">
+                    <i class="las la-times-circle"></i>
+                    Not Active
+                </span>
+            }
+        </div>
+    </div>
+    <div class="default-shadow p-3 rounded-2">
+        <p class="text-secondary">@Model.product.Description</p>
+    </div>
+
+    <a class="btn btn-primary" href="/products/Edit?id=@Model.product.Id">Edit</a>
+    <a class="btn btn-danger" href="/products/delete?id=@Model.product.Id">Delete</a>
+</div>

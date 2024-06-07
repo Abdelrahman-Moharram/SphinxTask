@@ -1,0 +1,44 @@
+﻿@page
+@model SpinxTask.Pages.Clients.Details.IndexModel
+@{
+}
+
+
+<div class="container">
+    <div class="d-flex justify-content-between ">
+        <div class="fw-bold text-muted fw-bold mb-4">Client Code: @Model.client.Code</div>
+
+        <div>
+            @if (@Model.client.StateName == "Active")
+            {
+                <span style="height:23px!important" class="badge bg-success h-100">@Model.client.StateName</span>
+            }
+            else if (@Model.client.StateName == "Pending")
+            {
+                <span class="badge bg-warning h-100">@Model.client.StateName</span>
+            }
+            else
+            {
+                <span class="badge bg-danger h-100">@Model.client.StateName</span>
+            }
+        </div>
+    </div>
+    <h2 class="h1 mb-5">@Model.client.Name</h2>
+
+
+    <div class="default-shadow p-3 rounded-2 mt-5 gap-3">
+    <a href="/clients/details/create?Id=@Model.Id" class="btn btn-primary"><i class="las la-plus"></i> Add</a>
+    
+    @if (Model.client?.ClientProducts?.Count() > 0)
+    {
+       <p class="text-secondary"></p>
+    }
+    else
+    {
+        <div class="text-center h3 fw-bold my-5">
+            <i class="las la-file"></i> No Products Available
+        </div>
+    }
+    </div>
+    
+</div>

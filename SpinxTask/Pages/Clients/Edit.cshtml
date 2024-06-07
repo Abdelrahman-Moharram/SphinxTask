@@ -1,0 +1,75 @@
+﻿@page
+@model SpinxTask.Pages.Clients.EditModel
+@{
+}
+
+@if(Model.res != null){
+    <div class="alert alert-danger">
+        @Model.res.Message
+    </div>
+}
+
+<form method="post">
+
+    <input asp-for="client.Id" hidden type="text" class="d-none" placeholder="Id">
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Client Name</label>
+        <input asp-for="client.Name" type="text" class="form-control" placeholder="name">
+        <ul class="text-danger">
+            @if (@ModelState.FirstOrDefault(i => i.Key == "client.Name").Value != null)
+                @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "client.Name").Value?.Errors)
+                {
+                    <li>@i.ErrorMessage</li>
+                }
+        </ul>
+    </div>
+    <div class="mb-3">
+        <label for="Code" class="form-label">Code</label>
+        <input readonly asp-for="client.Code" type="text" class="form-control" placeholder="Code">
+        <ul class="text-danger">
+            @if (@ModelState.FirstOrDefault(i => i.Key == "client.Code").Value != null)
+                @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "client.Code").Value?.Errors)
+                {
+                    <li>@i.ErrorMessage</li>
+                }
+        </ul>
+    </div>
+
+    <div class="mb-3 d-flex align-items-center gap-2">
+        <label for="StateId" class="form-label">State</label>
+
+        <select class="form-select" asp-for="client.StateId">
+
+            <option selected></option>
+            @foreach (var state in Model.createViewModel.States)
+            {
+                <option value="@state.Id">@state.Name</option>
+            }
+        </select>
+
+        <span class="text-danger">
+            @ModelState.FirstOrDefault(i => i.Key == "StateId").Value
+        </span>
+    </div>
+
+    <div class="mb-3 d-flex align-items-center gap-2">
+        <label for="ClassId" class="form-label">Class</label>
+
+        <select class="form-select" asp-for="client.ClassId">
+
+            <option selected></option>
+            @foreach (var c in Model.createViewModel.Classes)
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        </select>
+
+        <span class="text-danger">
+            @ModelState.FirstOrDefault(i => i.Key == "ClassId").Value
+        </span>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit">submit</button>
+</form>

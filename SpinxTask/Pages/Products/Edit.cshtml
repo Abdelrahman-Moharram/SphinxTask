@@ -1,0 +1,45 @@
+﻿@page
+@model SpinxTask.Pages.Products.EditModel
+@{
+}
+<form method="post">
+    <input asp-for="product.Id" type="text" hidden placeholder="id">
+
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Product Name</label>
+        <input asp-for="product.Name" type="text" class="form-control" placeholder="name">
+        <ul class="text-danger">
+            @if (@ModelState.FirstOrDefault(i => i.Key == "product.Name").Value != null)
+                @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "product.Name").Value?.Errors)
+                {
+                    <li>@i.ErrorMessage</li>
+                }
+        </ul>
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea asp-for="product.Description" class="form-control" rows="3"></textarea>
+        <ul class="text-danger">
+            @if (@ModelState.FirstOrDefault(i => i.Key == "product.Description").Value != null)
+                @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "product.Description").Value?.Errors)
+                {
+                    <li>@i.ErrorMessage</li>
+                }
+        </ul>
+    </div>
+
+    <div class="mb-3 d-flex align-items-center gap-2">
+
+        <input asp-for="product.IsActive" class="form-check d-inline-block" />
+        <label for="exampleFormControlTextarea1" class="form-label">
+            Is this product Active ?
+        </label>
+        <span class="text-danger">
+            @ModelState.FirstOrDefault(i => i.Key == "IsActive").Value
+        </span>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit">submit</button>
+</form>

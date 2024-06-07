@@ -1,0 +1,24 @@
+﻿@page
+@model SpinxTask.Pages.Clients.Details.CreateModel
+@{
+}
+<form method="post">
+    ProductList
+
+    <div class="mb-3 d-flex align-items-center gap-2">
+        <label for="ClassId" class="form-label">Products</label>
+
+        <select class="form-select" >
+
+            <option selected></option>
+            @foreach (var c in Model.ProductList)
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        </select>
+
+        <span class="text-danger">
+            @ModelState.FirstOrDefault(i => i.Key == "ClassId").Value
+        </span>
+    </div>
+</form>

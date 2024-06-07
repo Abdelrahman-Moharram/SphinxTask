@@ -1,0 +1,100 @@
+﻿
+@page
+@model SpinxTask.Pages.Clients.IndexModel
+@{
+    int len;
+    if (Model.length > 3)
+        len = 3;
+    else
+        len = Model.length;
+}
+
+<div class="container">
+    <a class="btn btn-primary px-4 py-2" href="/clients/create">
+        <i class="las la-plus"></i>
+        Create
+    </a>
+
+    <div class="row">
+    @if (Model.clients.Count() > 0)
+    {
+        
+        @foreach (var i in Model.clients.ToList())
+        {
+            <div class="col-sm-6 mb-3 mb-sm-0 gy-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">@i.Name</h5>
+                            @if (i.StateName == "Active")
+                            {
+                                <span class="badge bg-success h-100">@i.StateName</span>
+                            }
+                            else if (i.StateName == "Pending")
+                            {
+                                <span class="badge bg-warning h-100">@i.StateName</span>
+                            }else
+                            {
+                                <span class="badge bg-danger h-100">@i.StateName</span>
+                            }
+                            </div>
+                        <p class="card-text">@i.ClassName</p>
+                        <div class="d-flex justify-content-end">
+
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <a href="/clients/details?id=@i.Id" class="btn btn-success"><i class="las la-eye"></i> Details</a>
+                                <a href="/clients/edit?id=@i.Id" class="btn btn-primary"><i class="las la-edit"></i> Edit</a>
+                                <a href="/clients/delete?id=@i.Id" class="btn btn-danger"><i class="las la-trash"></i> Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="text-center h1 mt-5">
+            <i class="las la-file"></i> No clients
+        </div>
+    }
+    </div>
+
+    <div class="position-absolute" style="bottom:60px; left:50%">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (Model.P > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/clients?size=1&p=@(Model.P-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+            @for (int i = 1; i < len + 1; i++)
+            {
+                @if (i == Model.P)
+                {
+                    <li class="page-item"><a class="page-link bg-secondary text-white">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="/clients?size=1&p=@i">@i</a></li>
+                }
+
+            }
+            @if (Model.P < Model.length)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/clients?size=1&p=@(Model.P+1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+            @* <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li> *@
+        </ul>
+    </nav>
+</div>
+</div>
