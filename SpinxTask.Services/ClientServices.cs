@@ -69,6 +69,11 @@ namespace SpinxTask.Services
         public async Task<BaseResponse> AddClient(BaseClientDTO ClientDTO)
         {
             var Client = _mapper.Map<Client>(ClientDTO);
+            if (_unitOfWork.Clients.FindAsync(i => i.Code == ClientDTO.Code).Result != null)
+                return new BaseResponse
+                {
+                    Message = "Client With this code already exists"
+                };
             await _unitOfWork.Clients.AddAsync(Client);
             _unitOfWork.SaveAsync();
 
@@ -150,10 +155,11 @@ namespace SpinxTask.Services
                 {
                     Message = "Client is not found"
                 };
-            if (_unitOfWork.Products.GetById(clientProductDTO.ProductId).Result == null)
+            var product = await _unitOfWork.Products.GetById(clientProductDTO.ProductId);
+            if (product == null || !product.IsActive)
                 return new BaseResponse
                 {
-                    Message = "Product is not found"
+                    Message = "this Product is not found or in active"
                 };
             if (_unitOfWork.ClientProducts.FindAsync(i => i.ProductId == clientProductDTO.ProductId && i.ClientId == clientProductDTO.ClientId).Result != null)
                 return new BaseResponse
@@ -172,6 +178,12 @@ namespace SpinxTask.Services
         }
         public async Task<BaseResponse> UdateClientProduct(FormClientProductDTO clientProductDTO)
         {
+            var product = await _unitOfWork.Products.GetById(clientProductDTO.ProductId);
+            if (product == null || !product.IsActive)
+                return new BaseResponse
+                {
+                    Message = "this Product is not found or in active"
+                };
             if (_unitOfWork.ClientProducts.FindAsync(i => i.ProductId == clientProductDTO.ProductId && i.ClientId == clientProductDTO.ClientId).Result == null)
                 return new BaseResponse
                 {

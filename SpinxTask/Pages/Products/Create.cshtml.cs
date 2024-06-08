@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SpinxTask.Core.DTOs;
 using SpinxTask.Core.DTOs.Products;
 using SpinxTask.Core.IServices;
+using SpinxTask.Core.Models;
+using SpinxTask.Services;
 
 namespace SpinxTask.Pages.Products
 {
@@ -29,7 +31,8 @@ namespace SpinxTask.Pages.Products
             if (ModelState.IsValid)
             {
                 res = await _productServices.AddProduct(newProductDTO);
-                return Redirect("/products?size=10&p=1");
+                if (res.IsSuccess)
+                    return Redirect("/products?size=10&p=1");
             }
             return Page();
         }

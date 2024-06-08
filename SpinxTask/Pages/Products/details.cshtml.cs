@@ -17,9 +17,9 @@ namespace SpinxTask.Pages.Products
             _productServices = productServices;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public string Id { get; set; }
-        public async Task<IActionResult> OnGet()
+        /*[BindProperty(SupportsGet = true)]*/
+        /*public string Id { get; set; }*/
+        public async Task<IActionResult> OnGet(string Id)
         {
             if (Id == null) 
             {

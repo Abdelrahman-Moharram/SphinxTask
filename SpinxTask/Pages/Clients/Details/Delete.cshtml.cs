@@ -22,7 +22,7 @@ namespace SpinxTask.Pages.Clients.Details
 
 
         public BaseResponse res { get; set; }
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(string Id, string productId)
         {
             if (productId == null || Id == null)
             {
@@ -31,11 +31,11 @@ namespace SpinxTask.Pages.Clients.Details
                     Message = "Invalid Client Or Product Data"
                 };
 
-                return Redirect($"/clients/details/?Id={Id}");
+                return Redirect($"/clients/{Id}");
             }
             await _clientServices.DeleteClientProduct(ProductId: productId, ClientId: Id);
 
-            return Redirect($"/clients/details/?Id={Id}");
+            return Redirect($"/clients/{Id}");
 
 
 

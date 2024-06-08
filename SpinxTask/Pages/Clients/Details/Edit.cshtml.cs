@@ -32,14 +32,14 @@ namespace SpinxTask.Pages.Clients.Details
 
         [BindProperty(SupportsGet = true)]
         public string productId { get; set; }
-        public async Task OnGet()
+        public async Task OnGet(string Id, string productId)
         {
             ProductList = await _productServices.ListProductsBase();
             clientProduct = await _clientServices.GetClientProductForm(ClientId:Id, ProductId:productId);
         }
 
 
-        public async Task<IActionResult> OnPost(FormClientProductDTO clientProduct)
+        public async Task<IActionResult> OnPost(FormClientProductDTO clientProduct, string Id, string productId)
         {
             ProductList = await _productServices.ListProductsBase();
             clientProduct.ClientId = Id;
@@ -54,7 +54,7 @@ namespace SpinxTask.Pages.Clients.Details
             {
                 res = await _clientServices.UdateClientProduct(clientProduct);
                 if (res.IsSuccess)
-                    return Redirect($"/clients/details/?Id={Id}");
+                    return Redirect($"/clients/{Id}");
             }
             return Page();
         }

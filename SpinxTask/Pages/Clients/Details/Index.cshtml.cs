@@ -18,7 +18,7 @@ namespace SpinxTask.Pages.Clients.Details
         }
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(string Id)
         {
             if (Id == null)
                 return NotFound();

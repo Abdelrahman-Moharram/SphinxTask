@@ -19,21 +19,23 @@ namespace SpinxTask.Pages.Products
         {
             _productServices = productServices;
         }
+        public BaseResponse res {  get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string Id { get; set; }
-        public async void OnGet()
+        /*[BindProperty(SupportsGet = true)]
+        public string Id { get; set; }*/
+        public async void OnGet(string Id)
         {
             product = await _productServices.GetProduct(Id);
             
         }
 
-        public async Task<IActionResult> OnPost(ProductDTO product)
+        public async Task<IActionResult> OnPost(ProductDTO product, string Id)
         {
             if (ModelState.IsValid) 
             { 
-                await _productServices.EditProduct(product);
-                return Redirect($"/products");
+                res = await _productServices.EditProduct(product);
+                if (res.IsSuccess)
+                    return Redirect($"/products");
             }
             return Page();
 

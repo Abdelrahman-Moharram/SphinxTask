@@ -20,9 +20,8 @@ namespace SpinxTask.Pages.Clients
             _clientServices = clientServices;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public string Id { get; set; }
-        public async Task<IActionResult> OnGet()
+
+        public async Task<IActionResult> OnGet(string Id)
         {
             
             
@@ -33,7 +32,7 @@ namespace SpinxTask.Pages.Clients
 
         }
 
-        public async Task<IActionResult> OnPost(ClientDTO client)
+        public async Task<IActionResult> OnPost(ClientDTO client, string Id)
         {
             createViewModel = await _clientServices.GetClassesAndStates();
             if (ModelState.IsValid)

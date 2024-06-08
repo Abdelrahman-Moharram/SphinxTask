@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SpinxTask.Core.DTOs;
 using SpinxTask.Core.DTOs.Products;
 using SpinxTask.Core.Interfaces;
@@ -22,7 +23,8 @@ namespace SpinxTask.Services
             var products =
                 await _unitOfWork
                     .Products
-                    .GetAllAsync(
+                    .FindAllAsync(
+                        i => i.IsActive,
                         orderBy: i => i.OrderBy(p => p.Name)
                     );
             return _mapper.Map<List<BaseModule>>(products);
@@ -97,14 +99,20 @@ namespace SpinxTask.Services
 
         public async Task<BaseResponse> DeleteProduct(string Id)
         {
-            var product = await _unitOfWork.Products.GetById(Id);
+            var product = await _unitOfWork.Products.FindAsync(i=>i.Id == Id, include:i=>i.Include(p=>p.ClientProducts));
+
             if (product == null)
                 return new BaseResponse
                 {
                     IsSuccess = false,
                     Message = "This Product is not found"
                 };
-
+            if(product.ClientProducts.Count() > 0)
+                return new BaseResponse
+                {
+                    IsSuccess = false,
+                    Message = "This Product can't be deleted because it related with some clients product instances"
+                };
             _unitOfWork.Products.DeleteAsync(product);
             _unitOfWork.SaveAsync();
             return new BaseResponse

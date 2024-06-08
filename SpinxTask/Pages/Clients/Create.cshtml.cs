@@ -31,7 +31,8 @@ namespace SpinxTask.Pages.Clients
             if (ModelState.IsValid)
             {
                 res = await _clientServices.AddClient(newClientDTO);
-                return Redirect("/Clients?size=10&p=1");
+                if (res.IsSuccess)
+                    return Redirect("/Clients?size=10&p=1");
             }
             createViewModel = await _clientServices.GetClassesAndStates();
             return Page();

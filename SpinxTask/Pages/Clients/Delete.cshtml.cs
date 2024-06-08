@@ -14,9 +14,8 @@ namespace SpinxTask.Pages.Clients
             _clientServices = clientServices;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public string Id { get; set; }
-        public async Task<IActionResult> OnGet()
+
+        public async Task<IActionResult> OnGet(string Id)
         {
             response = await _clientServices.DeleteClient(Id);
 
