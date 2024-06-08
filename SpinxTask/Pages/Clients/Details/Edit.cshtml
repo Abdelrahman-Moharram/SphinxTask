@@ -1,5 +1,5 @@
 ﻿@page
-@model SpinxTask.Pages.Clients.Details.CreateModel
+@model SpinxTask.Pages.Clients.Details.EditModel
 @{
 }
 
@@ -10,7 +10,7 @@
     </div>
 }
 <form method="post">
-    <div class="mb-3 align-items-center gap-5">
+    @* <div class="mb-3 align-items-center gap-5">
         <label for="ProductId" class="form-label">Products</label>
         <select class="form-select" asp-for="@Model.clientProduct.ProductId">
 
@@ -28,7 +28,7 @@
                     <li>@i.ErrorMessage</li>
                 }
         </ul>
-    </div>
+    </div> *@
 
     <div class="mb-3 align-items-center gap-5">
         <label for="ProductId" class="form-label">License</label>
@@ -45,7 +45,7 @@
     <div class="justify-content-between d-flex">
         <div class="mb-3  align-items-center gap-5">
             <label for="StartDate" class="form-label">Start Date</label>
-            <input class="form-control" id="startDate" asp-for="@Model.clientProduct.StartDate" />
+            <input class="form-control" asp-for="@Model.clientProduct.StartDate" />
             <ul class="text-danger d-block">
                 @if (@ModelState.FirstOrDefault(i => i.Key == "clientProduct.StartDate").Value != null)
                     @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "clientProduct.StartDate").Value?.Errors)
@@ -57,8 +57,8 @@
 
         <div class="mb-3 align-items-center">
             <label for="EndDate" class="form-label">End Date</label>
-            <input class="form-control" id="endDate" asp-for="@Model.clientProduct.EndDate" />
-            <ul class="text-danger" id="endDataErrors">
+            <input class="form-control" asp-for="@Model.clientProduct.EndDate" />
+            <ul class="text-danger">
                 @if (@ModelState.FirstOrDefault(i => i.Key == "clientProduct.EndDate").Value != null)
                     @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "clientProduct.EndDate").Value?.Errors)
                     {
@@ -68,7 +68,7 @@
         </div>
 
     </div>
-    <button class="btn btn-primary" id="saveButton" type="submit">Save</button>
+    <button class="btn btn-primary" type="submit">Save</button>
 </form>
 
 @* <script>

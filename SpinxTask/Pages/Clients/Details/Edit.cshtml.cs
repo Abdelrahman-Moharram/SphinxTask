@@ -1,23 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SpinxTask.Core.DTOs;
 using SpinxTask.Core.DTOs.ClientProdutcs;
-using SpinxTask.Core.DTOs.Clients;
+using SpinxTask.Core.DTOs;
 using SpinxTask.Core.IServices;
-using SpinxTask.Core.Models;
 
 namespace SpinxTask.Pages.Clients.Details
 {
-    public class CreateModel : PageModel
+    public class EditModel : PageModel
     {
-        public CreateModel(IProductServices productServices, IClientServices clientServices)
-        {
-            _productServices = productServices;
-            _clientServices = clientServices;
-        }
-
         private readonly IProductServices _productServices;
         private readonly IClientServices _clientServices;
+
+        public EditModel(IClientServices clientServices, IProductServices productServices)
+        {
+            _clientServices = clientServices;
+            _productServices = productServices;
+        }
+
         public List<BaseModule> ProductList { get; set; }
         public BaseResponse res { get; set; }
 
@@ -26,26 +25,34 @@ namespace SpinxTask.Pages.Clients.Details
 
 
 
-        
+
+
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string productId { get; set; }
         public async Task OnGet()
         {
             ProductList = await _productServices.ListProductsBase();
+            clientProduct = await _clientServices.GetClientProductForm(ClientId:Id, ProductId:productId);
         }
 
-        
+
         public async Task<IActionResult> OnPost(FormClientProductDTO clientProduct)
         {
             ProductList = await _productServices.ListProductsBase();
             clientProduct.ClientId = Id;
+            clientProduct.ProductId = productId;
             ModelState.Remove("clientProduct.ClientId");
+            ModelState.Remove("clientProduct.ProductId");
+
             if (clientProduct.EndDate != null)
                 if (clientProduct.StartDate.Date >= clientProduct.EndDate.Value.Date)
                     ModelState.AddModelError("clientProduct.EndDate", "Start Date is Greater than End Date");
-            if (ModelState.IsValid) 
-            { 
-                res = await _clientServices.AddClientProduct(clientProduct);
+            if (ModelState.IsValid)
+            {
+                res = await _clientServices.UdateClientProduct(clientProduct);
                 if (res.IsSuccess)
                     return Redirect($"/clients/details/?Id={Id}");
             }

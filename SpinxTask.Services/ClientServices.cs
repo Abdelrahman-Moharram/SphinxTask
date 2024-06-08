@@ -5,6 +5,7 @@ using SpinxTask.Core.Interfaces;
 using SpinxTask.Core.IServices;
 using SpinxTask.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using SpinxTask.Core.DTOs.ClientProdutcs;
 
 
 namespace SpinxTask.Services
@@ -46,8 +47,10 @@ namespace SpinxTask.Services
                             .Include(m => m.State)
                             .Include(c => c.ClientProducts)
                                 .ThenInclude(p => p.Product)
+                        
                          
                     );
+
 
             return _mapper.Map<GetClientDTO>(Clients);
         }
@@ -133,5 +136,77 @@ namespace SpinxTask.Services
                 States = _unitOfWork.States.GetAllAsync().Result.Select(i => new BaseModule { Id = i.Id, Name = i.Name }).OrderBy(i => i.Name).ToList()
             };
         }
+    
+        public async Task<FormClientProductDTO> GetClientProductForm(string ClientId, string ProductId)
+        {
+            var clientProduct = await _unitOfWork.ClientProducts.FindAsync(i => i.ProductId == ProductId && i.ClientId == ClientId);
+            return _mapper.Map<FormClientProductDTO>(clientProduct);
+        }
+
+        public async Task<BaseResponse> AddClientProduct(FormClientProductDTO clientProductDTO)
+        {
+            if (_unitOfWork.Clients.GetById(clientProductDTO.ClientId).Result == null)
+                return new BaseResponse
+                {
+                    Message = "Client is not found"
+                };
+            if (_unitOfWork.Products.GetById(clientProductDTO.ProductId).Result == null)
+                return new BaseResponse
+                {
+                    Message = "Product is not found"
+                };
+            if (_unitOfWork.ClientProducts.FindAsync(i => i.ProductId == clientProductDTO.ProductId && i.ClientId == clientProductDTO.ClientId).Result != null)
+                return new BaseResponse
+                {
+                    Message = "This Product is already exists"
+                };
+            var clientProduct = _mapper.Map<ClientProduct>(clientProductDTO);
+
+            await _unitOfWork.ClientProducts.AddAsync(clientProduct);
+            _unitOfWork.SaveAsync();
+            return new BaseResponse
+            {
+                IsSuccess = true,
+                Message = "Product Client Added Successfully"
+            };
+        }
+        public async Task<BaseResponse> UdateClientProduct(FormClientProductDTO clientProductDTO)
+        {
+            if (_unitOfWork.ClientProducts.FindAsync(i => i.ProductId == clientProductDTO.ProductId && i.ClientId == clientProductDTO.ClientId).Result == null)
+                return new BaseResponse
+                {
+                    Message = "this Client product is not found"
+                };
+            var clientProduct = _mapper.Map<ClientProduct>(clientProductDTO);
+
+            await _unitOfWork.ClientProducts.UpdateAsync(clientProduct);
+            _unitOfWork.SaveAsync();
+            return new BaseResponse
+            {
+                IsSuccess = true,
+                Message = "Product Client Updated Successfully"
+            };
+        }
+        public async Task<BaseResponse> DeleteClientProduct(string ClientId, string ProductId)
+        {
+            
+            var clientProduct =  await _unitOfWork.ClientProducts.FindAsync(i=>i.ProductId == ProductId && i.ClientId == ClientId);
+            if (clientProduct == null)
+            {
+                return new BaseResponse
+                {
+                    Message = "this Client Product is not found"
+                };
+            }
+            _unitOfWork.ClientProducts.DeleteAsync(clientProduct);
+            _unitOfWork.SaveAsync();
+            return new BaseResponse
+            {
+                IsSuccess = true,
+                Message = "Product Added Successfully"
+            };
+        }
     }
+
+    
 }

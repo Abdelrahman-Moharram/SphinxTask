@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SpinxTask.Core.DTOs.ClientProdutcs;
 using SpinxTask.Core.Interfaces;
 using SpinxTask.Core.IServices;
 using SpinxTask.Infrastructure.Data;
@@ -34,6 +35,8 @@ builder.Services.AddScoped<IClientServices, ClientServices>();
 
 
 builder.Services.AddAutoMapper(typeof(ProductProfile));
+builder.Services.AddAutoMapper(typeof(ClientProfile));
+builder.Services.AddAutoMapper(typeof(ClientProductsProfile));
 
 
 var app = builder.Build();

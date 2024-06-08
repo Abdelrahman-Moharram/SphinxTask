@@ -25,7 +25,8 @@ namespace SpinxTask.Infrastructure.Mappers
                         StartDate = CP.StartDate,
                         Product = new Core.DTOs.BaseModule { Id = CP.ProductId, Name = CP.Product.Name }
                     }
-                )))
+                ).OrderBy(i=>i.Product.Name)
+                ))
                 .ReverseMap();
 
         }

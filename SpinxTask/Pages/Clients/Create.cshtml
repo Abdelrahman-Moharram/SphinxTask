@@ -3,12 +3,17 @@
 @{
 }
 
-
+@if (Model.res != null)
+{
+    <div class="alert alert-danger">
+        @Model.res.Message
+    </div>
+}
 <form method="post">
 
 
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Client Name</label>
+        <label class="form-label">Client Name</label>
         <input asp-for="newClientDTO.Name" type="text" class="form-control" placeholder="name">
         <ul class="text-danger">
             @if (@ModelState.FirstOrDefault(i => i.Key == "newClientDTO.Name").Value != null)

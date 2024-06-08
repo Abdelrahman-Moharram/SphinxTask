@@ -24,7 +24,8 @@ namespace SpinxTask.Core.Interfaces
             Expression<Func<T, bool>> expression,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
             bool IgnoreGlobalFilters = false,
-            bool disableTracking = true
+            bool disableTracking = true,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null
             );
         Task<IEnumerable<T>> FindAllAsync(
             Expression<Func<T, bool>> expression,

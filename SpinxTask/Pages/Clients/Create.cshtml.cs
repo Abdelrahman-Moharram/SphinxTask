@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SpinxTask.Core.DTOs;
 using SpinxTask.Core.DTOs.Clients;
 using SpinxTask.Core.IServices;
 
@@ -9,6 +10,7 @@ namespace SpinxTask.Pages.Clients
     {
         private readonly IClientServices _clientServices;
 
+        public BaseResponse res { get; set; }
 
         [BindProperty]
         public BaseClientDTO newClientDTO { get; set; }
@@ -28,7 +30,7 @@ namespace SpinxTask.Pages.Clients
         {
             if (ModelState.IsValid)
             {
-                var response = _clientServices.AddClient(newClientDTO);
+                res = await _clientServices.AddClient(newClientDTO);
                 return Redirect("/Clients?size=10&p=1");
             }
             createViewModel = await _clientServices.GetClassesAndStates();

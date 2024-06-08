@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SpinxTask.Infrastructure.Data;
 using System.Linq.Expressions;
 using SpinxTask.Core.Interfaces;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SpinxTask.Infrastructure.Presistence
 {
@@ -105,7 +104,9 @@ namespace SpinxTask.Infrastructure.Presistence
             Expression<Func<T, bool>> expression,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
             bool IgnoreGlobalFilters = false,
-            bool disableTracking = true
+            bool disableTracking = true,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null
+
         )
         {
             return await HandleIncludes(_entity, include, IgnoreGlobalFilters, disableTracking:disableTracking).SingleOrDefaultAsync(expression);

@@ -9,6 +9,7 @@
 }
 
 <div class="container">
+    <h1 class="my-5"> Products</h1>
     <a class="btn btn-primary px-4 py-2" href="/products/create">
         <i class="las la-plus"></i>
         Create
@@ -23,9 +24,35 @@
             <div class="col-sm-6 mb-3 mb-sm-0 gy-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">@i.Name</h5>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">@i.Name</h5>
+
+                            <div>
+                                @if (i.IsActive)
+                                {
+                                    <span class="text-success fw-bold">
+                                        <i class="las la-check-circle"></i>
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger fw-bold">
+                                        <i class="las la-times-circle"></i>
+                                        Not Active
+                                    </span>
+                                }
+                            </div>
+                        </div>
                         <p class="card-text">@i.Description</p>
-                        <a href="/products/details?id=@i.Id" class="btn btn-primary">Details</a>
+                        <div class="d-flex justify-content-end">
+
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <a href="/products/details?id=@i.Id" class="btn btn-success"><i class="las la-eye"></i> Details</a>
+                                <a href="/products/edit?id=@i.Id" class="btn btn-primary"><i class="las la-edit"></i> Edit</a>
+                                <a href="/products/delete?id=@i.Id" class="btn btn-danger"><i class="las la-trash"></i> Delete</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

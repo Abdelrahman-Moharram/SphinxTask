@@ -2,7 +2,12 @@
 @model SpinxTask.Pages.Products.CreateModel
 @{
 }
-
+@if (Model.res != null)
+{
+    <div class="alert alert-danger">
+        @Model.res.Message
+    </div>
+}
 <form method="post">
 
 
@@ -35,9 +40,13 @@
         <label for="exampleFormControlTextarea1" class="form-label">
             Is this product Active ?
         </label>
-        <span class="text-danger">
-            @ModelState.FirstOrDefault(i => i.Key == "IsActive").Value
-        </span>
+        <ul class="text-danger">
+            @if (@ModelState.FirstOrDefault(i => i.Key == "newProductDTO.IsActive").Value != null)
+                @foreach (var i in @ModelState.FirstOrDefault(i => i.Key == "newProductDTO.IsActive").Value?.Errors)
+                {
+                    <li>@i.ErrorMessage</li>
+                }
+        </ul>
     </div>
     
 
